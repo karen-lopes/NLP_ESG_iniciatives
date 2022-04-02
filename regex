@@ -69,3 +69,21 @@ for i in range(len(complete_list)):
     company = complete_list[i][0]
     statements = extract_statements(nlp, complete_list[i][2])
     statement_list.extend(statements)
+
+
+# remoção de pontuacao e stopwords
+
+def remove_stopwords(text,lang,domain_stopwords=[]):
+  
+  stop_words = nltk.corpus.stopwords.words(lang) # lang='portuguese' or lang='english'
+  domain_stopwords = ['brasil','com','como',  'rgo', 'alm','meio','ambiente','dia', 'outra','padre', 'ano','disso', 'desenvolvimento','sustentvel', 'covid','cada', 'vez','relatri', 'varej', 'esg','bbc', 'covid', 'pilar', 'at', 's', 'r', 'pandemia', 'anos', 'tambm', 'mundo','todo', 'ss', 'onde', 'tanto','nele', 'todas', 'todo']
+  
+  s = str(text).lower() # tudo para caixa baixa
+  table = str.maketrans({key: None for key in string.punctuation})
+  s = s.translate(table) # remove pontuacao
+  tokens = word_tokenize(s) #obtem tokens
+  v = [i for i in tokens if not i in stop_words and not i in domain_stopwords and not i.isdigit()] # remove stopwords
+  s = ""
+  for token in v:
+    s += token+" "
+  return s.strip()
